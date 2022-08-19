@@ -1,15 +1,30 @@
+from typing import Tuple
+
+import numpy as np
+import tensorflow as tf
 from tensorflow import keras
 
-class VAE(keras.Model):
-    def __init__(self, encoder, decoder, recons_loss_factor=1_000, **kwargs):
-        super(VAE, self).__init__(**kwargs)
+
+class ConditionalVAE(keras.Model):
+    """
+    Builds a variational autoencoder.
+    """
+    def __init__(self, encoder: keras.models.Model, decoder: keras.models.Model,
+                 recons_loss_factor=1_000, **kwargs):
+        """
+        Builds the Conditional VAE.
+        :param encoder:  keras model that acts as an encoder
+        :param decoder:  keras model that acts as a decoder
+        :param recons_loss_factor: parameter in the function loss
+        :param kwargs: positional arguments passed to keras.models.Model
+        """
+
+        super(ConditionalVAE, self).__init__(**kwargs)
         self.encoder = encoder
         self.decoder = decoder
         self.recons_loss_factor = recons_loss_factor
         self.total_loss_tracker = keras.metrics.Mean(name="total_loss")
-        self.reconstruction_loss_tracker = keras.metrics.Mean(
-            name="reconstruction_loss"
-        )
+        self.reconstruction_loss_tracker = keras.metrics.Mean(name="reconstruction_loss")
         self.kl_loss_tracker = keras.metrics.Mean(name="kl_loss")
 
     @property
@@ -20,7 +35,12 @@ class VAE(keras.Model):
             self.kl_loss_tracker,
         ]
 
-    def call(self, inputs):
+    def call(self, inputs: Tuple[np.ndarray, np.ndarray]):
+        """
+        Calls the model
+        :param inputs: Both input data and the condition data
+        :return: reconstruction by the vae and both mean and log var of the latent representation
+        """
         images, labels = inputs[0]
         z_mean, z_log_var, z = self.encoder(inputs)
         reconstruction = self.decoder((z, labels))
@@ -33,11 +53,8 @@ class VAE(keras.Model):
         # Reconstruction loss thorugh mse
         reconstruction_loss = tf.reduce_mean(tf.square(image - reconstruction), axis=[1, 2, 3])
 
-        # Reconstruction loss through binary crossentropy
-        # reconstruction_loss = keras.losses.binary_crossentropy(K.batch_flatten(data) , K.batch_flatten(reconstruction), axis=-1)
-
         # KL Divergence loss
-        kl_loss = - 0.5 * tf.reduce_sum(1 + z_log_var - tf.square(z_mean) - K.exp(z_log_var), axis=-1)
+        kl_loss = - 0.5 * tf.reduce_sum(1 + z_log_var - tf.square(z_mean) - tf.exp(z_log_var), axis=-1)
 
         # Total loss is sum of both losses
         total_loss = self.recons_loss_factor * reconstruction_loss + kl_loss
@@ -51,9 +68,9 @@ class VAE(keras.Model):
 
             reconstruction_loss, kl_loss, total_loss = self.compute_losses(data)
 
-            total_loss = K.mean(total_loss, axis=0)
-            kl_loss = K.mean(kl_loss, axis=0)
-            reconstruction_loss = K.mean(reconstruction_loss, axis=0)
+            total_loss = tf.math.reduce_mean(total_loss, axis=0)
+            kl_loss = tf.math.reduce_mean(kl_loss, axis=0)
+            reconstruction_loss = tf.math.reduce_mean(reconstruction_loss, axis=0)
 
         # Computes the gradient
         grads = tape.gradient(total_loss, self.trainable_weights)
@@ -83,4 +100,3 @@ class VAE(keras.Model):
             "reconstruction_loss": self.reconstruction_loss_tracker.result(),
             "kl_loss": self.kl_loss_tracker.result(),
         }
-
