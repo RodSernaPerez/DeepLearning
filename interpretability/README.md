@@ -8,7 +8,7 @@
 Gives a score to a subset $x$ of all the inputs.
 
 We call $g_i(x)$ the output of layer $i$.
-Then we define $g_i^{CD}(x) = (\Beta_i(x), \gamma_i(x))$ so $g_i(x) = \Beta_i(x) + \gamma_i(x))$ .
+Then we define $g_i^{CD}(x) = (\beta_i(x), \gamma_i(x))$ so $g_i(x) = \beta_i(x) + \gamma_i(x))$ .
 
 The final score can be generated recursively.
 
