@@ -56,10 +56,10 @@ This bias correction is not normally needed since the number of steps is usually
 
 In RMS prop, we include the second power of the derivative in the update equation, together with momentum.
 
-$s_{i}^{k} = \beta *  s_{i}^{k - 1} + (1- \beta) \frac{\partial l}{\partial (W_{i}^{k-1}})^2$
+$s_{i}^{k} = \beta *  s_{i}^{k - 1} + (1- \beta) \frac{\partial l}{\partial W_{i}^{k-1}} ^2$
 
 And:
-$W_{i}^{k} = W_{i - 1}^{k -1} - \alpha * \frac{\partial l}{\partial W_{i}^{k-1}} * \frac{1}{\sqrt{s_{i}^{k}}$
+$W_{i}^{k} = W_{i - 1}^{k -1} - \alpha * \frac{\partial l}{\partial W_{i}^{k-1}} * \frac{1}{\sqrt{s_{i}^{k}}}$
 
 Intuitively, it penalises the gradients that oscillates too much.
 
@@ -69,5 +69,5 @@ Intuitively, it penalises the gradients that oscillates too much.
 
 Adam is only using RMS prop and momentum at the same time (using correction for both of them).
 
-$W_{i}^{k} = W_{i - 1}^{k -1} - \alpha *  \frac{v_{i}^{k}}{\sqrt{s_{i}^{k}}$
+$W_{i}^{k} = W_{i - 1}^{k -1} - \alpha *  \frac{v_{i}^{k}}{\sqrt{s_{i}^{k}}}$
 
