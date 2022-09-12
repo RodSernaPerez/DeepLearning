@@ -4,7 +4,9 @@ Deep learning networks are trained using gradient descent.
 
 Follows the equation:
 
+
 $W_{i}^{k} = W_{i - 1}^{k -1} - \alpha * \frac{\partial l}{\partial W_{i}^{k-1}}$
+
 
 
 Being $l(y, y_{pred})$ the loss function.
