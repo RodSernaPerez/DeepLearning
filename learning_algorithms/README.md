@@ -4,7 +4,11 @@ Deep learning networks are trained using gradient descent.
 
 Follows the equation:
 
+<<<<<<< HEAD
 $W_{i}^{k} = W_{i - 1}^{k -1} - \alpha * \frac{\partial l}{\partial W_{i}^{k-1}}$
+=======
+$W_{i}^{k} = W_{i - 1}^{k -1} - \alpha * \frac{\partial l}{\partial \W_{i}^{k-1}}$
+>>>>>>> 3d5f8be41518fb648d93a5fcf53d817bf1a7a553
 
 Being $l(y, y_{pred})$ the loss function.
 
@@ -21,7 +25,11 @@ Is the same that Batch Gradient Descent with a batch size of 1.
 
 The change in the weights is a function of previous gradients also:
 
+<<<<<<< HEAD
 $v_{i}^{k} = \beta *  v_{i}^{k - 1} + (1- \beta) \frac{\partial l}{\partial W_{i}^{k}}$
+=======
+$v_{i}^{k} = \beta *  v_{i}^{k - 1} + (1- \beta) \frac{\partial l}{\partial \W_{i}^{k}}$
+>>>>>>> 3d5f8be41518fb648d93a5fcf53d817bf1a7a553
 
 And:
 $W_{i}^{k} = W_{i - 1}^{k -1} - \alpha * v_{i}^{k}$
