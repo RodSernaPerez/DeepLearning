@@ -31,4 +31,5 @@ The image goes to the encoder and the next word is predicted given the previous 
 
 For the data they used:
 
-- IIT-CDIP: 
+- IIT-CDIP: a public available dataset
+- A technique to generate synthetic data
