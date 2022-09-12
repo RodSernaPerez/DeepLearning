@@ -71,3 +71,19 @@ Adam is only using RMS prop and momentum at the same time (using correction for 
 
 $W_{i}^{k} = W_{i - 1}^{k -1} - \alpha *  \frac{v_{i}^{k}}{\sqrt{s_{i}^{k}}}$
 
+
+## Adagrad
+
+Sets a different learning rate for each one of the parameters. This is only efficient when used on sparse data.
+
+The learning rate of a parameter is inversely proportional to the frequence the weight is updated. If is very common, 
+the learning rate is slower.
+
+$W_{i}^{k} = W_{i - 1}^{k -1} - \alpha * \frac{\partial l}{\partial W_{i}^{k-1}} * \frac{1}{\sqrt{g_{i}^{k}}}$
+
+Being $g_{i}$ the sum of the squares of all updates of the weight.
+
+
+## More
+
+More algorithms can be found [here](https://ruder.io/optimizing-gradient-descent/index.html#adagrad)
